@@ -15,9 +15,9 @@ const Post = () => {
   const { id } = router.query;
   const { singlePost } = useSelector((state)=> state.post);
 
-  if(router.isFallback){
-    return <div>로딩중.....</div>
-  }
+  //if(router.isFallback){
+   // return <div>로딩중.....</div>
+ // }
   
   return(
     <AppLayout>
