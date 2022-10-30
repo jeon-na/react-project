@@ -38,7 +38,6 @@ const Home = () => {
       window.removeEventListener('scroll', onScroll);
     };
   }, [hasMorePosts, loadPostsLoading, mainPosts]);
-
   return (
     <AppLayout>
       {me && <PostForm />}
