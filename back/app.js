@@ -25,7 +25,7 @@ db.sequelize.sync()
   .catch(console.error);
 passportConfig();
 //배포모드일때
-if(process.env.NODE_ENV === 'production' ){
+if(process.env.NODE_ENV === 'production'){
   app.use(morgan('combined'));
   app.use(hpp());
   app.use(helmet());
@@ -57,6 +57,6 @@ app.use('/post', postRouter);
 app.use('/user', userRouter);
 app.use('/hashtag', hashtagRouter);
 
-app.listen(3065, () => {
+app.listen(80, () => {
   console.log('서버 실행 중!');
 });
