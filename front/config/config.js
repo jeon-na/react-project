@@ -1,1 +1,1 @@
-export const backUrl = 'http://43.201.19.135';
+export const backUrl = 'http://api.nataemap.co.kr';
