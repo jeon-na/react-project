@@ -29,13 +29,17 @@ if(process.env.NODE_ENV === 'production'){
   app.use(morgan('combined'));
   app.use(hpp());
   app.use(helmet());
+  app.use(cors({
+    origin: 'http://nataemap.co.kr',
+    credentials: true,
+  }));
 }else{ //개발모드 일때
   app.use(morgan('dev'));
+  app.use(cors({
+    origin: true,
+    credentials: true,
+  }));
 }
-app.use(cors({
-  origin: ['http://localhost:3060', 'http://nataemap.co.kr'],
-  credentials: true,
-}));
 app.use('/', express.static(path.join(__dirname, 'uploads')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
