@@ -19,11 +19,11 @@ exports.handler = async (event, context, callback) => {
       .resize(400, 400, { fit: 'inside' })
       .toFormat(requiredFormat)
       .toBuffer();
-    await s3.putObject.promise()({ //재업로드
+    await s3.putObject({ //재업로드
       Bucket,
       Key: `thumb/${filename}`,
       Body: resizedImage,
-    });
+    }).promise();
     console.log('put', resizedImage.length);
     return callback(null,`thumb/${filename}`); //return할때 첫번째는 에러가 없어서 null 두번째는 성공
   } catch (error) {
