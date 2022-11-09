@@ -26,11 +26,12 @@ db.sequelize.sync()
 passportConfig();
 //배포모드일때
 if(process.env.NODE_ENV === 'production'){
+  app.enable('trust proxy');
   app.use(morgan('combined'));
   app.use(hpp());
-  app.use(helmet());
+  app.use(helmet({contentSecurityPolicy: false}));
   app.use(cors({
-    origin: 'http://nataemap.co.kr',
+    origin: 'https://nataemap.co.kr',
     credentials: true,
   }));
 }else{ //개발모드 일때
@@ -48,9 +49,10 @@ app.use(session({
   saveUninitialized: false,
   resave: false,
   secret: process.env.COOKIE_SECRET,
+  proxy: process.env.NODE_ENV === 'production',
   cookie: {
     httpOnly: true,
-    secure: false,
+    secure: process.env.NODE_ENV === 'production', //
     domain: process.env.NODE_ENV === 'production' && '.nataemap.co.kr'
   },
 }));
@@ -66,6 +68,6 @@ app.use('/post', postRouter);
 app.use('/user', userRouter);
 app.use('/hashtag', hashtagRouter);
 
-app.listen(80, () => {
+app.listen(3065, () => {
   console.log('서버 실행 중!');
 });

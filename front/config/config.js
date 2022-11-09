@@ -1,1 +1,1 @@
-export const backUrl = 'http://api.nataemap.co.kr';
+export const backUrl = process.env.NODE_ENV === 'production' ? 'https://api.nataemap.co.kr' : 'http://localhost:3065';
