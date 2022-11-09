@@ -284,7 +284,7 @@ router.patch('/:postId', isLoggedIn, async (req, res, next) => { // PATCH /post/
     next(error);
   }
 });
-
+ 
 router.delete('/:postId', isLoggedIn, async (req, res, next) => { // DELETE /post/10
   try {
     await Post.destroy({

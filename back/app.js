@@ -24,7 +24,7 @@ db.sequelize.sync()
   })
   .catch(console.error);
 passportConfig();
-//배포모드일때
+//배포모드일때 
 if(process.env.NODE_ENV === 'production'){
   app.enable('trust proxy');
   app.use(morgan('combined'));

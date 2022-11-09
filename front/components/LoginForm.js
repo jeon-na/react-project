@@ -57,5 +57,4 @@ const LoginForm = () => {
     </FormWrapper>
   );
 };
-
 export default LoginForm;

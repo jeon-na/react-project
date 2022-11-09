@@ -36,7 +36,6 @@ const User = () => {
       window.removeEventListener('scroll', onScroll);
     };
   }, [mainPosts.length, hasMorePosts, id]);
-
   return (
     <AppLayout>
       {userInfo && (

@@ -1,6 +1,6 @@
 const DataTypes = require('sequelize');
 const { Model } = DataTypes;
-
+ 
 module.exports = class Hashtag extends Model {
   static init(sequelize) {
     return super.init({

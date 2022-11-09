@@ -9,7 +9,7 @@
     "start": "cross-env NODE_ENV=production pm2 start app.js"
   },
   "author": "nahyeon",
-  "license": "ISC",
+  "license": "ISC", 
   "dependencies": {
     "aws-sdk": "^2.1246.0",
     "bcrypt": "^5.0.1",

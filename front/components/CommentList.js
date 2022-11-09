@@ -53,6 +53,7 @@ const PostCard = ({ post }) => {
     }, []);
     const { me } = useSelector((state) => state.user);
     const id = me?.id;
+    
     return ( 
             <div>
                 <List 

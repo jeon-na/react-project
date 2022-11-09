@@ -11,7 +11,6 @@ const CommentForm = ({ post }) => {
   const id = useSelector((state) => state.user.me?.id);
   const { addCommentDone, addCommentLoading } = useSelector((state) => state.post);
   const [commentText, onChangeCommentText, setCommentText] = useInput('');
-
   useEffect(() => {
     if (addCommentDone) {
       setCommentText('');

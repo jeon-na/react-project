@@ -30,7 +30,6 @@ const Icons = styled.div`
     margin: 5px 10px;
 
 `;
-
 moment.locale('ko'); //한글로 바꿔주기
 
 const PostCard = ({ post }) => {

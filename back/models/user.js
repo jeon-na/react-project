@@ -18,7 +18,7 @@ module.exports = class User extends Model {
         type: DataTypes.STRING(100),
         allowNull: false, // 필수
       },
-    }, {
+    }, { 
       modelName: 'User',
       tableName: 'users',
       charset: 'utf8',

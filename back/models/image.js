@@ -8,7 +8,7 @@ module.exports = class Image extends Model {
       src: {
         type: DataTypes.STRING(200),
         allowNull: false,
-      },
+      }, 
     }, {
       modelName: 'Image',
       tableName: 'images',

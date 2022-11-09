@@ -2,7 +2,7 @@ const AWS = require('aws-sdk');
 const sharp = require('sharp');
 
 const s3 = new AWS.S3();
-
+ 
 exports.handler = async (event, context, callback) => {
   const Bucket = event.Records[0].s3.bucket.name; //react-project-s3-image
   const Key = decodeURIComponent(event.Records[0].s3.object.key); //original_12312312_abc.png

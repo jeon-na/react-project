@@ -18,7 +18,6 @@ const PostCardContent = ({ postData, editMode, onChangePost, onCancelUpdate }) =
   const onChangeText = useCallback((e) => {
     setEditText(e.target.value);
   });
-
   return ( // 첫 번째 게시글 #해시태그 #해시태그
     <div>
       {editMode

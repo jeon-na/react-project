@@ -49,7 +49,7 @@ router.get('/', async (req, res, next) => { // GET /posts
     console.error(error);
     next(error);
   }
-});
+}); 
 //내가 팔로잉한 사람들만 차단관계
 router.get('/related', async (req, res, next) => {
   try {

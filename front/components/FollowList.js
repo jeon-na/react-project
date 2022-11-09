@@ -39,6 +39,7 @@ const FollowList = ({ header, data, onClickMore, loading }) => {
         )}
     />
 )
+
 // return (
 //     <List 
 //         style={{marginBottom: 20}}

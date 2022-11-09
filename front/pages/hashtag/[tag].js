@@ -34,7 +34,6 @@ const Hashtag = () => {
       window.removeEventListener('scroll', onScroll);
     };
   }, [mainPosts.length, hasMorePosts, tag, loadPostsLoading]);
-
   return (
     <AppLayout>
       {mainPosts.map((c) => (

@@ -1,5 +1,4 @@
 import produce from '../util/produce';
-
 export const initialState = {
   mainPosts: [],
   singlePost: null,

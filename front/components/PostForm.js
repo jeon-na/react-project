@@ -55,7 +55,6 @@ const PostForm = () => {
       data: index,
     });
   }, []);
-
   return (
     <Form style={{ margin: '10px 0 20px' }} encType="multipart/form-data" onFinish={onSubmit}>
       <Input.TextArea

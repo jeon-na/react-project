@@ -22,7 +22,6 @@ const FollowButtonInList = ({ item }) => {
             });
         }
     }, [isFollowing]);
-    
     return (
         <Button loading={followLoading || unfollowLoading} onClick={onClickButton}>
             {isFollowing ? '언팔로우' : '팔로우'}

@@ -9,7 +9,6 @@ const NicknameEditForm = () => {
   const { me } = useSelector((state) => state.user);
   const [nickname, onChangeNickname] = useInput(me?.nickname || '');
   const dispatch = useDispatch();
-
   const onSubmit = useCallback(() => {
     dispatch({
       type: CHANGE_NICKNAME_REQUEST,

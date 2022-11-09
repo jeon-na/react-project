@@ -10,7 +10,7 @@ module.exports = class Post extends Model {
         allowNull: false,
       },
       // RetweetId
-    }, {
+    }, { 
       modelName: 'Post',
       tableName: 'posts',
       charset: 'utf8mb4',

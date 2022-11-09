@@ -6,7 +6,6 @@ import ImagesZoom from './ImagesZoom';
 
 const PostImages = ({ images }) => {
   const [showImagesZoom, setShowImagesZoom] = useState(false);
-
   const onZoom = useCallback(() => {
     setShowImagesZoom(true);
   }, []);
