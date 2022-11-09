@@ -37,7 +37,6 @@ const AppLayout = ({ children }) => {
   const onSearch = useCallback(()=> {
     Router.push(`/hashtag/${searchInput}`);
   }, [searchInput]);
-
   return (
     <div>
           <Global />
