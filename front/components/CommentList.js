@@ -51,10 +51,9 @@ const PostCard = ({ post }) => {
             data: post.id,
         })
     }, []);
-
     const { me } = useSelector((state) => state.user);
     const id = me?.id;
-    return (
+    return ( 
             <div>
                 <List 
                     itemLayout="horizontal"

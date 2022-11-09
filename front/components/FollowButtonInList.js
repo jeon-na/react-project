@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { FOLLOW_REQUEST, UNFOLLOW_REQUEST } from '../reducers/user';
 
 const FollowButtonInList = ({ item }) => {
+
     const dispatch = useDispatch();
     const { me, followLoading, unfollowLoading } = useSelector((state) => state.user); // 리덕스에서 내 정보 받아오고
     const isFollowing = me?.Followings.find((v) => v.id === item.id) // 포스트 작성한 사람들 중에 내가 팔로윙한 사람들

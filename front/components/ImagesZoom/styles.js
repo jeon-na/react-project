@@ -101,6 +101,7 @@ export const Overlay = styled.div`
 //     }
 // `;
 
+
 export const Global = createGlobalStyle`
     .slick-slide {
         display: inline-block;
