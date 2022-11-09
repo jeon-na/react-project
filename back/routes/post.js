@@ -33,6 +33,20 @@ const upload = multer({
   limits: { fileSize: 20 * 1024 * 1024 }, // 20MB
 });
 
+//const upload = multer({
+//  storage: multer.diskStorage({
+//      destination(req, file, done) {
+//          done(null, 'uploads');
+//      } ,
+//      filename(req, file, done) {
+//          const ext = path.extname(file.originalname); // 확장자
+//          const basename = path.basename(file.originalname, ext);
+//          done(null, basename + '_' + new Date().getTime() + ext);
+//      },
+//  }),
+//  limits: { fileSize: 20 * 1024 * 1024 },
+//});
+
 router.post('/', isLoggedIn, upload.none(), async (req, res, next) => { // POST /post
   try {
     const hashtags = req.body.content.match(/#[^\s#]+/g);
@@ -84,6 +98,7 @@ router.post('/', isLoggedIn, upload.none(), async (req, res, next) => { // POST 
 router.post('/images', isLoggedIn, upload.array('image'), (req, res, next) => { // POST /post/images
   console.log(req.files);
   res.json(req.files.map((v) => v.location.replace(/\/origianl\//, '/thumb/'))); //오리지널이 있으면 thumb 폴더로
+  //res.json(req.files.map((v)=> v.filename));
 });
 
 router.get('/:postId', async (req, res, next) => { // GET /post/1
@@ -239,6 +254,31 @@ router.delete('/:postId/like', isLoggedIn, async (req, res, next) => { // DELETE
     }
     await post.removeLikers(req.user.id);
     res.json({ PostId: post.id, UserId: req.user.id });
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+//게시글 수정
+router.patch('/:postId', isLoggedIn, async (req, res, next) => { // PATCH /post/10
+  const hashtags = req.body.content.match(/#[^\s#]+/g);
+  try {
+    await Post.update({
+        content : req.body.content
+    }, {
+      where: {
+        id: req.params.postId,
+        UserId: req.user.id,
+      },
+    });
+    const post = await Post.findOne({ where: { id: req.params.postId }});
+    if (hashtags) {
+      const result = await Promise.all(hashtags.map((tag) => Hashtag.findOrCreate({
+        where: { name: tag.slice(1).toLowerCase() },
+      }))); // [[노드, true], [리액트, true]]
+      await post.setHashtags(result.map((v) => v[0]));
+    }
+    res.status(200).json({ PostId: parseInt(req.params.postId, 10), content: req.body.content });
   } catch (error) {
     console.error(error);
     next(error);
