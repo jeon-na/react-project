@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import { useSelector, useDispatch } from 'react-redux';
 import { Card, Popover, Button, Avatar, List, Comment } from 'antd';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   RetweetOutlined, PictureTwoTone, ScheduleOutlined, ScheduleTwoTone, 
   PictureOutlined, HeartOutlined, HeartTwoTone, MessageOutlined, EllipsisOutlined
@@ -13,11 +13,11 @@ import styled from 'styled-components';
 import PostImages from './PostImages';
 import CommentForm from './CommentForm';
 import PostCardContent from './PostCardContent';
-import { LIKE_POST_REQUEST, 
-  REMOVE_POST_REQUEST, 
-  UNLIKE_POST_REQUEST, 
-  RETWEET_REQUEST, UPDATE_POST_REQUEST } from '../reducers/post';
 import FollowButton from './FollowButton';
+import PostRoutes from './PostRoutes';
+
+import { LIKE_POST_REQUEST, REMOVE_POST_REQUEST, UNLIKE_POST_REQUEST, 
+  RETWEET_REQUEST, UPDATE_POST_REQUEST } from '../reducers/post';
 
 const Title = styled.div`
     margin: 10px 10px;
@@ -35,9 +35,12 @@ moment.locale('ko'); //한글로 바꿔주기
 const PostCard = ({ post }) => {
   const dispatch = useDispatch();
   const { removePostLoading } = useSelector((state) => state.post);
-  const [commentFormOpened, setCommentFormOpened] = useState(false);
+  //const [liked, setLiked] = useState(false);
   const id = useSelector((state) => state.user.me?.id);
   const [editMode, setEditMode] = useState(false);
+  
+  const [commentFormOpened, setCommentFormOpened] = useState(false);
+  const [pictureOrRoute, setPictureOrRoute] = useState(true);
 
   const onClickUpdate = useCallback(() => {
     setEditMode(true);
@@ -47,6 +50,7 @@ const PostCard = ({ post }) => {
     setEditMode(false);
   },[]);
 
+  //게시글 수정
   const onChangePost = useCallback((editText)=> () => {
     dispatch({
       type: UPDATE_POST_REQUEST,
@@ -56,7 +60,7 @@ const PostCard = ({ post }) => {
       },
     });
   },[post]);
-
+  //좋아요
   const onLike = useCallback(() => {
     if (!id) {
       return alert('로그인이 필요합니다.');
@@ -66,6 +70,7 @@ const PostCard = ({ post }) => {
       data: post.id,
     });
   }, [id]);
+  //좋아요취소
   const onUnlike = useCallback(() => {
     if (!id) {
       return alert('로그인이 필요합니다.');
@@ -75,6 +80,11 @@ const PostCard = ({ post }) => {
       data: post.id,
     });
   }, [id]);
+
+  const onTogglePictureOrRoute = useCallback(() => {
+    setPictureOrRoute((prev) => !prev);
+  }, []);
+
   const onToggleComment = useCallback(() => {
     setCommentFormOpened((prev) => !prev);
   }, []);
@@ -103,9 +113,28 @@ const PostCard = ({ post }) => {
   return (
     <div style={{ marginBottom: 20 }}>
       <Card
-        cover={post.Images[0] && <PostImages images={post.Images} />}
+        // cover={post.Images[0] && <PostImages images={post.Images} />}
+        title={[<Avatar style={{margin:'0px 15px 0px 0px'}}>{post.User.nickname[0]}</Avatar>,
+                    post.User.nickname,
+                ]}
+                extra={id && <FollowButton post={post} />}
+        cover={[ 
+          <Icons>
+              {pictureOrRoute 
+              ? <PictureTwoTone twoToneColor="#9c9c9c" style={{fontSize: '25px', color: '#9f9f9f', margin: '5px 5px 0px 0px'}} onClick={onTogglePictureOrRoute} />
+              :<PictureOutlined style={{fontSize: '25px', color: '#9f9f9f', margin: '5px 5px 0px 0px'}} onClick={onTogglePictureOrRoute}/>}
+              {pictureOrRoute 
+              ? <ScheduleOutlined style={{fontSize: '25px', color: '#9f9f9f', margin: '5px 5px 0px 0px'}} onClick={onTogglePictureOrRoute}/>
+              : <ScheduleTwoTone twoToneColor="#9c9c9c" style={{fontSize: '25px', color: '#9f9f9f' , margin: '5px 5px 0px 0px' }} onClick={onTogglePictureOrRoute} />}
+          </Icons>,
+          <Title>{'제목 : ' + post.title}</Title>,
+          <div>
+              {pictureOrRoute
+              ? post.Images[0] && <PostImages images={post.Images} />
+              : <PostRoutes />}
+          </div>
+          ]}
         actions={[
-          <RetweetOutlined key="retweet" onClick={onRetweet} />,
           liked
             ? <HeartTwoTone twoToneColor="#eb2f96" key="heart" onClick={onUnlike} />
             : <HeartOutlined key="heart" onClick={onLike} />,
@@ -127,11 +156,12 @@ const PostCard = ({ post }) => {
             )}
           >
             <EllipsisOutlined />
-          </Popover>,
+          </Popover>
         ]}
-        title={post.RetweetId ? `${post.User.nickname}님이 리트윗하셨습니다.` : null}
-        extra={id && <FollowButton post={post} />}
-      >
+        //title={post.RetweetId ? `${post.User.nickname}님이 리트윗하셨습니다.` : null}
+        
+      > 
+        {/* 리트윗게시물 */}
         {post.RetweetId && post.Retweet
           ? (
             <Card
@@ -153,12 +183,12 @@ const PostCard = ({ post }) => {
             <>
               <div style={{float: 'right'}}>{moment(post.createdAt).format('YYYY.MM.DD')}</div>
               <Card.Meta
-                avatar={(
-                  <Link href ={`/user/${post.User.id}`} prefetch={false}> 
-                    <a><Avatar>{post.User.nickname[0]}</Avatar></a>
-                  </Link>
-                )}
-                title={post.User.nickname}
+                // avatar={(
+                //   <Link href ={`/user/${post.User.id}`} prefetch={false}> 
+                //     <a><Avatar>{post.User.nickname[0]}</Avatar></a>
+                //   </Link>
+                //)}
+                //title={post.User.nickname}
                 description={<PostCardContent editMode ={editMode} onChangePost={onChangePost} onCancelUpdate={onCancelUpdate} postData={post.content} />}
               />
             </>
@@ -195,6 +225,7 @@ PostCard.propTypes = {
   post: PropTypes.shape({
     id: PropTypes.number,
     User: PropTypes.object,
+    title: PropTypes.string,
     content: PropTypes.string,
     createdAt: PropTypes.string,
     Comments: PropTypes.arrayOf(PropTypes.object),

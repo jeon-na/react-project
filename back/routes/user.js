@@ -27,9 +27,13 @@ router.get('/', async (req, res, next) => { // GET /user
           model: User,
           as: 'Followers',
           attributes: ['id'],
+        },{
+          model: Comment,
+          as: 'Comments',
+          attributes: ['id'],
         }]
       })
-      res.status(200).json(fullUserWithoutPassword);
+      res.status(200).json(fullUserWithoutPassword); //action.data로 간다.
     } else {
       res.status(200).json(null);
     }
@@ -90,6 +94,10 @@ router.get('/:userId', async (req, res, next) => { // GET /user/1
           model: User,
           as: 'Followers',
           attributes: ['id'],
+        },{
+          model: Comment,
+          as: 'Comments',
+          attributes: ['id'],
         }]
       })
       if(fullUserWithoutPassword) {
@@ -97,6 +105,8 @@ router.get('/:userId', async (req, res, next) => { // GET /user/1
         data.Posts = data.Posts.length; // 개인정보 침해 예방
         data.Followers = data.Followers.length;
         data.Followings = data.Followings.length;
+        data.Comments = data.Comments.length;
+        //data.Liked = data.Liked.length;
         res.status(200).json(data);
     } else {
       res.status(404).json('존재하지 않는 사용자입니다.');
@@ -155,7 +165,7 @@ router.get('/:userId/posts', async (req, res, next) => { // GET /user/1/posts
 });
 
 router.post('/login', isNotLoggedIn, (req, res, next) => {
-  passport.authenticate('local', (err, user, info) => {
+  passport.authenticate('local', (err, user, info) => { //passport 전략 실행 local.js에
     if (err) {
       console.error(err);
       return next(err);
@@ -163,7 +173,7 @@ router.post('/login', isNotLoggedIn, (req, res, next) => {
     if (info) {
       return res.status(401).send(info.reason);
     }
-    return req.login(user, async (loginErr) => {
+    return req.login(user, async (loginErr) => { //passport 로그인 쿠키랑 id만
       if (loginErr) {
         console.error(loginErr);
         return next(loginErr);
@@ -184,16 +194,20 @@ router.post('/login', isNotLoggedIn, (req, res, next) => {
           model: User,
           as: 'Followers',
           attributes: ['id'],
-        }]
+        },{
+          model: Comment,
+          as: 'Comments',
+          attributes: ['id'],
+      }]
       })
-      return res.status(200).json(fullUserWithoutPassword);
+      return res.status(200).json(fullUserWithoutPassword); //이때 데이터 전부
     });
   })(req, res, next);
 });
 
 router.post('/', isNotLoggedIn, async (req, res, next) => { // POST /user/
   try {
-    const exUser = await User.findOne({
+    const exUser = await User.findOne({ //db에서 찾는다.
       where: {
         email: req.body.email,
       }
@@ -202,15 +216,15 @@ router.post('/', isNotLoggedIn, async (req, res, next) => { // POST /user/
       return res.status(403).send('이미 사용 중인 아이디입니다.');
     }
     const hashedPassword = await bcrypt.hash(req.body.password, 12);
-    await User.create({
-      email: req.body.email,
+    await User.create({ //테이블 안에 데이터를 넣는다.
+      email: req.body.email, //req.body로 프런트로부터 받아온다.
       nickname: req.body.nickname,
       password: hashedPassword,
     });
     res.status(201).send('ok');
   } catch (error) {
     console.error(error);
-    next(error); // status 500
+    next(error); // status 500 //넥스트에 에러 보내준다.
   }
 });
 

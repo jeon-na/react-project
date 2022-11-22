@@ -150,7 +150,7 @@ function* loadMyInfo() {
 }
 
 function logInAPI(data) {
-  return axios.post('/user/login', data);
+  return axios.post('/user/login', data); //데이터를 백으로 보낸다.
 }
 
 function* logIn(action) {
@@ -188,13 +188,13 @@ function* logOut() {
   }
 }
 
-function signUpAPI(data) {
+function signUpAPI(data) {//data는 email password닉네임 이라는 객체
   return axios.post('/user', data);
 }
 
 function* signUp(action) {
   try {
-    const result = yield call(signUpAPI, action.data);
+    const result = yield call(signUpAPI, action.data); 
     console.log(result);
     yield put({
       type: SIGN_UP_SUCCESS,

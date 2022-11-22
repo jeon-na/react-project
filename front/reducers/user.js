@@ -200,7 +200,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
       break;
     case LOG_IN_SUCCESS:
       draft.logInLoading = false;
-      draft.me = action.data;
+      draft.me = action.data; //me에 데이터가 들어간다.
       draft.logInDone = true;
       break;
     case LOG_IN_FAILURE:

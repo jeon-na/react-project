@@ -32,7 +32,7 @@ const SearchInput = styled(Input.Search)`
 `;
 
 const AppLayout = ({ children }) => {
-  const [searchInput, onChangeSearchInput] = useInput('');
+  const [searchInput, onChangeSearchInput] = useInput(''); 
   const { me } = useSelector((state) => state.user);
   const onSearch = useCallback(()=> {
     Router.push(`/hashtag/${searchInput}`);

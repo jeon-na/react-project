@@ -177,7 +177,7 @@ function loadPostsAPI(lastId) {
 
 function* loadPosts(action) {
   try {
-    const result = yield call(loadPostsAPI, action.lastId);
+    const result = yield call(loadPostsAPI, action.lastId); //액션의 데이터가 들어간다.
     yield put({
       type: LOAD_POSTS_SUCCESS,
       data: result.data,
@@ -190,7 +190,7 @@ function* loadPosts(action) {
     });
   }
 }
-
+//아래 action.data에서 꺼낸 데이터가 여기로 전달된다. 백으로 데이터를 보낸다.
 function addPostAPI(data) {
   return axios.post('/post', data);
 }
@@ -278,7 +278,7 @@ function* addComment(action) {
     });
   }
 }
-
+//이펙트 함수 액션이 들어올때까지 기다린다.
 function* watchRetweet() {
   yield takeLatest(RETWEET_REQUEST, retweet);
 }

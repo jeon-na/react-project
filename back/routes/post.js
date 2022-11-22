@@ -5,11 +5,11 @@ const fs = require('fs');
 const multerS3 = require('multer-s3');
 const AWS = require('aws-sdk');
 
-const { Post, Image, Comment, User, Hashtag } = require('../models');
+const { Post, Image, Comment, User, Hashtag, Spot } = require('../models');
 const { isLoggedIn } = require('./middlewares');
 
 const router = express.Router();
-
+//파일을 다룬다.
 try {
   fs.accessSync('uploads');
 } catch (error) {
@@ -34,7 +34,7 @@ const upload = multer({
 });
 
 //const upload = multer({
-//  storage: multer.diskStorage({
+//  storage: multer.diskStorage({ //어디에 저장할거냐
 //      destination(req, file, done) {
 //          done(null, 'uploads');
 //      } ,
@@ -44,16 +44,24 @@ const upload = multer({
 //          done(null, basename + '_' + new Date().getTime() + ext);
 //      },
 //  }),
-//  limits: { fileSize: 20 * 1024 * 1024 },
+//  limits: { fileSize: 20 * 1024 * 1024 }, //파일 용량 20MB
 //});
 
 router.post('/', isLoggedIn, upload.none(), async (req, res, next) => { // POST /post
   try {
     const hashtags = req.body.content.match(/#[^\s#]+/g);
     const post = await Post.create({
+      title:  req.body.title,
       content: req.body.content,
       UserId: req.user.id,
     });
+    // await Spot.create 프런트에서 데이터 받아오면 생성하기
+    // const spot = await Spot.create({
+    //   name: req.body.name,
+    //   address: req.body.address,
+    //   date: req.body.date,
+    //   order: req.body.order,
+    // })
     if (hashtags) {
       const result = await Promise.all(hashtags.map((tag) => Hashtag.findOrCreate({
         where: { name: tag.slice(1).toLowerCase() },
@@ -62,8 +70,8 @@ router.post('/', isLoggedIn, upload.none(), async (req, res, next) => { // POST 
     }
     if (req.body.image) {
       if (Array.isArray(req.body.image)) { // 이미지를 여러 개 올리면 image: [제로초.png, 부기초.png]
-        const images = await Promise.all(req.body.image.map((image) => Image.create({ src: image })));
-        await post.addImages(images);
+        const images = await Promise.all(req.body.image.map((image) => Image.create({ src: image }))); //한방에 두개가 디비에 저장, 시퀄라이즈로 만들어준다. 파일 주소만 넣는다.
+        await post.addImages(images); //포스트에 이미지들이 알아서 추가된다.
       } else { // 이미지를 하나만 올리면 image: 제로초.png
         const image = await Image.create({ src: req.body.image });
         await post.addImages(image);
@@ -98,7 +106,7 @@ router.post('/', isLoggedIn, upload.none(), async (req, res, next) => { // POST 
 router.post('/images', isLoggedIn, upload.array('image'), (req, res, next) => { // POST /post/images
   console.log(req.files);
   res.json(req.files.map((v) => v.location.replace(/\/origianl\//, '/thumb/'))); //오리지널이 있으면 thumb 폴더로
-  //res.json(req.files.map((v)=> v.filename));
+  //res.json(req.files.map((v)=> v.filename)); 
 });
 
 router.get('/:postId', async (req, res, next) => { // GET /post/1
@@ -215,7 +223,7 @@ router.post('/:postId/comment', isLoggedIn, async (req, res, next) => { // POST 
     }
     const comment = await Comment.create({
       content: req.body.content,
-      PostId: parseInt(req.params.postId, 10),
+      PostId: parseInt(req.params.postId, 10),  //리듀서랑 맞춰주기
       UserId: req.user.id,
     })
     const fullComment = await Comment.findOne({
@@ -238,7 +246,7 @@ router.patch('/:postId/like', isLoggedIn, async (req, res, next) => { // PATCH /
     if (!post) {
       return res.status(403).send('게시글이 존재하지 않습니다.');
     }
-    await post.addLikers(req.user.id);
+    await post.addLikers(req.user.id); //모델에 추가한다.
     res.json({ PostId: post.id, UserId: req.user.id });
   } catch (error) {
     console.error(error);

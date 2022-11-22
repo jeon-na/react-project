@@ -12,7 +12,7 @@ import axios from 'axios';
 
 const Home = () => {
   const dispatch = useDispatch();
-  const { me } = useSelector((state) => state.user);
+  const { me } = useSelector((state) => state.user); //user.js에서 가져온다.
   const { mainPosts, hasMorePosts, loadPostsLoading, retweetError } = useSelector((state) => state.post);
 
   useEffect(() => {
@@ -20,7 +20,6 @@ const Home = () => {
       alert(retweetError);
     }
   }, [retweetError]);
-
   useEffect(() => {
     function onScroll() {
       if (window.pageYOffset + document.documentElement.clientHeight > document.documentElement.scrollHeight - 300) {
@@ -46,7 +45,7 @@ const Home = () => {
     </AppLayout>
   );
 };
-
+//제일 먼저 실행된다.
 export const getServerSideProps = wrapper.getServerSideProps(async(context) => {
   const cookie = context.req ? context.req.headers.cookie: ''; //서버에 쿠키 전달
   axios.defaults.headers.Cookie = ''; //쿠키 공유 문제 해결
@@ -59,7 +58,7 @@ export const getServerSideProps = wrapper.getServerSideProps(async(context) => {
   context.store.dispatch({
     type: LOAD_POSTS_REQUEST,
   });
-  context.store.dispatch(END);
+  context.store.dispatch(END); //리퀘스트가 success 될때까지 기다린다.
   await context.store.sagaTask.toPromise();
 });
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { List, Button, Card, Avatar } from 'antd';
-import { StopOutlined } from '@ant-design/icons';
+import FollowButtonInList from './FollowButtonInList';
 import { useDispatch } from 'react-redux';
 
 import { UNFOLLOW_REQUEST, REMOVE_FOLLOWER_REQUEST } from '../reducers/user';

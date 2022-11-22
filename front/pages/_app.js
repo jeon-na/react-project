@@ -9,7 +9,7 @@ const NodeBird = ({ Component }) => (
   <>
     <Head>
       <meta charSet="utf-8" />
-      <title>NodeBird</title>
+      <title>trip together</title>
     </Head>
     <Component />
   </>

@@ -5,6 +5,10 @@ module.exports = class Post extends Model {
   static init(sequelize) {
     return super.init({
       // id가 기본적으로 들어있다.
+      title: {
+        type: DataTypes.STRING(30),
+        allowNull: true
+      },
       content: {
         type: DataTypes.TEXT,
         allowNull: false,
