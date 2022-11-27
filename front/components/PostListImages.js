@@ -24,7 +24,7 @@ const PostListImages = ({ images, post }) => {
 
 return(
     <>
-      <img role="presentation" src={`${images[0].src}`} alt={images[0].src} onClick={onZoom} />
+      <img role="presentation" src={`${images[0].src}`} alt={images[0].src} onClick={onZoom} width={150} height={150}/>
       {/* <img role="presentation" src={`http://localhost:3065/${images[0].src}`} alt={images[0].src} onClick={onZoom} width={150} height={150} /> */}
       {showImagesZoom && <PostCard2 post={post} onClose={onClose} />}
     </>
