@@ -102,7 +102,7 @@ function SpotForm({ onCreate = (v) => console.log(v) }) {
             </Row>
             <>
             <InputWrapper
-                    apiKey={"AIzaSyAfK4sYvop7KkMdsqwIcl3kmE9v7rCZeJI"}
+                    apiKey={"secret"}
                     style={{ width: "90%" }}
                     onPlaceSelected={(place) => {
                         console.log(place['formatted_address']);
