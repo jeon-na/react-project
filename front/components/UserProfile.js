@@ -35,7 +35,7 @@ const UserProfile = (post) => {
                 <Menu.Item><Link href="/follower"><a><TeamOutlined key="follwings"/> 팔로워 {me.Followers.length}</a></Link></Menu.Item>
                 <Menu.Item><Link href="/myposts"><a><SolutionOutlined key="twit"/> 게시글 {me.Posts.length}</a></Link></Menu.Item>
                 {/* <Menu.Item><Link href="/comments"><a><MessageOutlined key="comments"/> 댓글 {me.Comments.length}</a></Link></Menu.Item>  */}
-                <Menu.Item><Link href="/scrappedposts"><a><BookOutlined key="scraps"/> 저장됨 </a></Link></Menu.Item>
+                <Menu.Item><Link href="/scrappedposts"><a><BookOutlined key="scraps"/> 저장됨 {me.Liked.length}</a></Link></Menu.Item>
             </Menu>
         </Card>
     // <Card
