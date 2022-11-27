@@ -189,7 +189,7 @@ const PostCard = ({ post }) => {
                 //   </Link>
                 //)}
                 //title={post.User.nickname}
-                description={<PostCardContent editMode ={editMode} onChangePost={onChangePost} onCancelUpdate={onCancelUpdate} postData={post.content} />}
+                description={pictureOrRoute && <PostCardContent editMode ={editMode} onChangePost={onChangePost} onCancelUpdate={onCancelUpdate} postData={post.content} />}
               />
             </>
           )}

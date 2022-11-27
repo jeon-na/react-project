@@ -78,21 +78,7 @@ function SpotForm({ onCreate = (v) => console.log(v) }) {
             </Input.Group>
             </Col>
             <Col span={8}>
-            {/* <>
-                <Autocomplete
-                    apiKey={"AIzaSyAfK4sYvop7KkMdsqwIcl3kmE9v7rCZeJI"}
-                    style={{ width: "90%" }}
-                    onPlaceSelected={(place) => {
-                        console.log(place);
-                    }}
-                    fields ={["formatted_address", "name", "place_id"]} 
-                    options={{
-                        types: ['tourist_attraction', 'museum', 'shopping_mall', 'bakery', 'amusement_park'],
-                        componentRestrictions: { country: "kr" },
-                    }}
-                    defaultValue=""
-                />
-            </> */}
+
 
             <ButtonWrapper type="submit">
                 추가
