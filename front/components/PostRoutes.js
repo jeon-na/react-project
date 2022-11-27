@@ -12,26 +12,27 @@ const data = [
   },
   {
     spotOrder: 2,
-    spotName: '블루보틀 삼청 카페',
-    spotAddress: '대한민국 서울특별시 종로구 사직로 161 경복궁'
+    spotName: '안국 노티드 카페',
+    spotAddress: '대한민국 서울특별시 종로구 북촌로 6-3'
   },
   {
     spotOrder: 3,
-    spotName: '명동교자 분점',
-    spotAddress: '대한민국 서울특별시 종로구 사직로 161 경복궁'
+    spotName: '명동 지하쇼핑센터',
+    spotAddress: '대한민국 서울특별시 중구 퇴계로 124'
   },
+  
 ];
 
 const data2 = [
   {
     spotOrder: 1,
     spotName: '롯데월드타워',
-    spotAddress: '대한민국 서울특별시 종로구 사직로 161 경복궁'
+    spotAddress: '대한민국 서울특별시 송파구 올림픽로 300'
   },
   {
     spotOrder: 2,
-    spotName: '매드포갈릭',
-    spotAddress: '대한민국 서울특별시 종로구 사직로 161 경복궁'
+    spotName: '석촌호수',
+    spotAddress: '대한민국 서울특별시 송파구 잠실6동'
   },
 
 ];
@@ -39,12 +40,12 @@ const data3 = [
   {
     spotOrder: 1,
     spotName: '코엑스',
-    spotAddress: '대한민국 서울특별시 종로구 사직로 161 경복궁'
+    spotAddress: '대한민국 서울특별시 강남구 영동대로 513'
   },
   {
     spotOrder: 2,
-    spotName: '농민백암순대 본점',
-    spotAddress: '대한민국 서울특별시 종로구 사직로 161 경복궁'
+    spotName: '마이아트 뮤지엄',
+    spotAddress: '대한민국 서울특별시 강남구 테헤란로 518'
   },
 
 ];
