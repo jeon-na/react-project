@@ -22,7 +22,6 @@ const PostForm = () => {
   const { RangePicker } = DatePicker;
   const [DateList, setDateList] = useState([]);
   var dateLength = 0;
-  var Schedules ="";
 
   const [spotOrder, onChangeSpotOrder, setSpotOrder] = useInput(0);
   const [spotName, onChangeSpotName, setSpotName] = useInput('');
