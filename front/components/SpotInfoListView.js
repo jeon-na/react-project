@@ -1,4 +1,3 @@
-import SpotInfo from "./SpotInfo";
 import { useEffect } from "react";
 import { List, Segmented, Avatar } from 'antd';
 
@@ -7,7 +6,7 @@ function SpotInfoListView({ spotList = [] }) {
     var cnt = 1
 
     useEffect(() => {
-        console.log("SpotInfoListView component");
+        // console.log("SpotInfoListView component");
     }, [])
 
 
@@ -24,6 +23,7 @@ function SpotInfoListView({ spotList = [] }) {
             <List.Item.Meta
               avatar={<Avatar size="small" shape="square" style={{ backgroundColor: '#87d068' }}>{cnt++}</Avatar>}
               title={item.spotName}
+              description={item.spotAddress}
             />
           </List.Item>
         )}

@@ -31,6 +31,10 @@ router.get('/', async (req, res, next) => { // GET /user
           model: Comment,
           as: 'Comments',
           attributes: ['id'],
+        },{
+          model: Post,
+          as: 'Liked',
+          attributes: ['id'],
         }]
       })
       res.status(200).json(fullUserWithoutPassword); //action.data로 간다.
@@ -94,9 +98,13 @@ router.get('/:userId', async (req, res, next) => { // GET /user/1
           model: User,
           as: 'Followers',
           attributes: ['id'],
-        },{
+        },{  
           model: Comment,
           as: 'Comments',
+          attributes: ['id'],
+        },{
+          model: Post, //내가 좋아요를 누른 게시물
+          as: 'Liked',
           attributes: ['id'],
         }]
       })
@@ -106,7 +114,7 @@ router.get('/:userId', async (req, res, next) => { // GET /user/1
         data.Followers = data.Followers.length;
         data.Followings = data.Followings.length;
         data.Comments = data.Comments.length;
-        //data.Liked = data.Liked.length;
+        data.Liked = data.Liked.length; 
         res.status(200).json(data);
     } else {
       res.status(404).json('존재하지 않는 사용자입니다.');
@@ -116,7 +124,7 @@ router.get('/:userId', async (req, res, next) => { // GET /user/1
     next(error);
   }
 });
-
+//그 유저의 포스트를 다 가져온다.
 router.get('/:userId/posts', async (req, res, next) => { // GET /user/1/posts
   try {
     const where = { UserId: req.params.userId};
@@ -198,6 +206,10 @@ router.post('/login', isNotLoggedIn, (req, res, next) => {
           model: Comment,
           as: 'Comments',
           attributes: ['id'],
+      },{
+        model: Post,
+        as: 'Liked',
+        attributes: ['id'],
       }]
       })
       return res.status(200).json(fullUserWithoutPassword); //이때 데이터 전부

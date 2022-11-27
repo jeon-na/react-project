@@ -1,6 +1,8 @@
 import { Col, Row, Input } from 'antd';
 import { useState } from 'react';
-import styled from 'styled-components';
+import styled, { isStyledComponent } from 'styled-components';
+import Autocomplete from "react-google-autocomplete";
+
 
 
 const ButtonWrapper = styled.button`
@@ -19,15 +21,40 @@ box-shadow:inset 0px -3px 7px 0px #29bbff;
    text-shadow:0px 1px 0px #263666;
 `;
 
+const InputWrapper = styled(Autocomplete)`
+box-sizing: border-box;
+margin: 0;
+padding: 4px 11px;
+color: rgba(0,0,0,.88);
+font-size: 14px;
+line-height: 1.5714285714285714;
+list-style: none;
+font-family: -apple-system,BlinkMacSystemFont,segoe ui,Roboto,helvetica neue,Arial,noto sans,sans-serif,apple color emoji,segoe ui emoji,segoe ui symbol,noto color emoji;
+position: relative;
+display: inline-block;
+width: 100%;
+min-width: 0;
+background-color: #fff;
+background-image: none;
+border-width: 1px;
+border-style: solid;
+border-color: #d9d9d9;
+border-radius: 6px;
+transition: all .2s;
+}
+`
+
 function SpotForm({ onCreate = (v) => console.log(v) }) {
+    const [spotOrder, setSpotOrder] = useState(1);
     const [spotName, setSpotName] = useState("")
     const [spotAddress, setSpotAddress] = useState("")
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        onCreate({ spotName: spotName, spotAddress: spotAddress })
+        onCreate({ spotOrder: spotOrder, spotName: spotName, spotAddress: spotAddress})
         setSpotName("")
         setSpotAddress("")
+        setSpotOrder(c => c + 1)
     }
 
     return (
@@ -51,12 +78,45 @@ function SpotForm({ onCreate = (v) => console.log(v) }) {
             </Input.Group>
             </Col>
             <Col span={8}>
+            {/* <>
+                <Autocomplete
+                    apiKey={"AIzaSyAfK4sYvop7KkMdsqwIcl3kmE9v7rCZeJI"}
+                    style={{ width: "90%" }}
+                    onPlaceSelected={(place) => {
+                        console.log(place);
+                    }}
+                    fields ={["formatted_address", "name", "place_id"]} 
+                    options={{
+                        types: ['tourist_attraction', 'museum', 'shopping_mall', 'bakery', 'amusement_park'],
+                        componentRestrictions: { country: "kr" },
+                    }}
+                    defaultValue=""
+                />
+            </> */}
+
             <ButtonWrapper type="submit">
                 추가
             {/* <button type="submit"> 추가 </button> */}
             </ButtonWrapper>
             </Col>
             </Row>
+            <>
+            <InputWrapper
+                    apiKey={"AIzaSyAfK4sYvop7KkMdsqwIcl3kmE9v7rCZeJI"}
+                    style={{ width: "90%" }}
+                    onPlaceSelected={(place) => {
+                        console.log(place['formatted_address']);
+                        setSpotAddress(place['formatted_address']);
+                    }}
+                    fields ={["formatted_address", "name", "place_id"]} 
+                    options={{
+                        types: ['tourist_attraction', 'museum', 'shopping_mall', 'bakery', 'amusement_park'],
+                        componentRestrictions: { country: "kr" },
+                    }}
+                    defaultValue=""
+                />
+                {/* </InputWrapper> */}
+            </>
             
         </form>
     );

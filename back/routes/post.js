@@ -17,42 +17,43 @@ try {
   fs.mkdirSync('uploads');
 }
 
-AWS.config.update({
-  accessKeyId: process.env.S3_ACCESS_KEY_ID,
-  secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
-  region: 'ap-northeast-2',
-});
-const upload = multer({
-  storage: multerS3({
-    s3: new AWS.S3(),
-    bucket: 'react-project-s3-image',
-    key(req, file, cb) {
-      cb(null, `original/${Date.now()}_${path.basename(file.originalname)}`)
-    }
-  }),
-  limits: { fileSize: 20 * 1024 * 1024 }, // 20MB
-});
-
-//const upload = multer({
-//  storage: multer.diskStorage({ //어디에 저장할거냐
-//      destination(req, file, done) {
-//          done(null, 'uploads');
-//      } ,
-//      filename(req, file, done) {
-//          const ext = path.extname(file.originalname); // 확장자
-//          const basename = path.basename(file.originalname, ext);
-//          done(null, basename + '_' + new Date().getTime() + ext);
-//      },
-//  }),
-//  limits: { fileSize: 20 * 1024 * 1024 }, //파일 용량 20MB
+//AWS.config.update({
+//  accessKeyId: process.env.S3_ACCESS_KEY_ID,
+//  secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
+//  region: 'ap-northeast-2',
 //});
+//const upload = multer({
+//  storage: multerS3({
+//    s3: new AWS.S3(),
+//    bucket: 'react-project-s3-image',
+//    key(req, file, cb) {
+//      cb(null, `original/${Date.now()}_${path.basename(file.originalname)}`)
+//    }
+//  }),
+//  limits: { fileSize: 20 * 1024 * 1024 }, // 20MB
+//});
+
+const upload = multer({
+  storage: multer.diskStorage({ //어디에 저장할거냐
+      destination(req, file, done) {
+          done(null, 'uploads');
+      } ,
+      filename(req, file, done) {
+          const ext = path.extname(file.originalname); // 확장자
+          const basename = path.basename(file.originalname, ext);
+          done(null, basename + '_' + new Date().getTime() + ext);
+      },
+  }),
+  limits: { fileSize: 20 * 1024 * 1024 }, //파일 용량 20MB
+});
 
 router.post('/', isLoggedIn, upload.none(), async (req, res, next) => { // POST /post
   try {
     const hashtags = req.body.content.match(/#[^\s#]+/g);
     const post = await Post.create({
-      title:  req.body.title,
+      title: req.body.title,
       content: req.body.content,
+      schedules: req.body.schedules,
       UserId: req.user.id,
     });
     // await Spot.create 프런트에서 데이터 받아오면 생성하기
@@ -105,8 +106,8 @@ router.post('/', isLoggedIn, upload.none(), async (req, res, next) => { // POST 
 
 router.post('/images', isLoggedIn, upload.array('image'), (req, res, next) => { // POST /post/images
   console.log(req.files);
-  res.json(req.files.map((v) => v.location.replace(/\/origianl\//, '/thumb/'))); //오리지널이 있으면 thumb 폴더로
-  //res.json(req.files.map((v)=> v.filename)); 
+  //res.json(req.files.map((v) => v.location.replace(/\/origianl\//, '/thumb/'))); //오리지널이 있으면 thumb 폴더로
+  res.json(req.files.map((v)=> v.filename)); 
 });
 
 router.get('/:postId', async (req, res, next) => { // GET /post/1

@@ -21,6 +21,7 @@ const PostForm = () => {
   //const imageInput = useRef();
   const { RangePicker } = DatePicker;
   const [DateList, setDateList] = useState([]);
+  var dateLength = 0;
 
   const [spotOrder, onChangeSpotOrder, setSpotOrder] = useInput(0);
   const [spotName, onChangeSpotName, setSpotName] = useInput('');
@@ -32,13 +33,16 @@ const PostForm = () => {
   const [spotId, setSpotId] = useState(0)
   const [spotList, setSpotList] = useState([])
 
+
   useEffect(() => {
-    console.log(spotList)
-  }, [spotList])
+    console.log('spotList', spotList)
+    // console.log('spotsList', spotsList)
+    console.log('Schedules', Schedules)
+  }, [spotList, Schedules])
 
   const handleOnCreate = (spotInfo) => {
-    setSpotList(spotList.concat({ spotOrder: spotId, spotName: spotInfo.spotName, spotAddress: spotInfo.spotAddress }))
-    setSpotId(c => c + 1)
+    setSpotList(spotList.concat({ spotOrder: spotInfo.spotOrder, spotName: spotInfo.spotName, spotAddress: spotInfo.spotAddress }))
+    //setSpotId(c => c + 1)
   }
 
   var Open = []
@@ -77,22 +81,27 @@ const PostForm = () => {
   //여기서부터 시작하세요!!!
   const [title, onChangeTitle] = useInput('');
   const [mainTexts, onChangeMainTexts] = useInput('');
+  const [Schedules, onChangeSchedules] = useInput([]);
 
+  //수정 111111111111
   const onSubmitForm = useCallback(() => {
     if (!mainTexts || !mainTexts.trim()) {
       return alert('게시글을 작성하세요.');
     }
+    //dispatch(addPost([title, mainTexts, Schedules]));
+    handleCancle();
     const formData = new FormData();
     imagePaths.forEach((p) => {
       formData.append('image', p); //back에서 req.body.image
     });
     formData.append('title', title); 
     formData.append('content', mainTexts); //back에서 req.body.content
+    formData.append('schedules', Schedules);
     return dispatch({
       type: ADD_POST_REQUEST,
       data: formData,
     });
-  }, [title, mainTexts, imagePaths]);
+  }, [title, mainTexts, imagePaths, Schedules]);
   
   //이미지 등록
   const imageInput = useRef();
@@ -139,6 +148,7 @@ const PostForm = () => {
     setDateList(DateArray);
     setWhatModalOpen(Open);
     setIsRadioOpen(true);
+    dateLength = DateArray.length;
     
     console.log('Radio Open ' + Open);
     console.log('Radio WhatModalOpen ' + WhatModalOpen);
@@ -193,9 +203,11 @@ const onChangeDate = (range) => {
   console.log('day', btDay)
 }
 
-  const setSchdule = useCallback(() => {
-      handleCancle2();
-  });
+const registerSchdule = useCallback(() => {
+  console.log('register', Schedules)
+  handleCancle2();
+}, [Schedules]);
+
 
   const onFinish = (values) => {
       console.log('Received values of form:', values);
@@ -224,7 +236,7 @@ const onChangeDate = (range) => {
 
     console.log('DateList', DateList.length)
 
-    for(var i=0; i<3; i++) {
+    for(var i=0; i<DateList.length; i++) {
         if(i<=v[0]) {
             O.push(false)
         } else {
@@ -233,10 +245,12 @@ const onChangeDate = (range) => {
     }
     console.log('v', v[0])
     console.log('O', O)
+
     setWhatModalOpen(O);
+    Schedules.push({ Date: DateList[v[0]][3], Key: v[0]+1, Schedule: spotList })
     setSpotList([]);
 
-    }, []);
+    }, [spotList, DateList, Schedules]);
 
   return (
     <>
@@ -250,7 +264,7 @@ const onChangeDate = (range) => {
         ]}>
         <Form onFinish={onSubmitForm}>
         <Form.Item><Input value={title} onChange={onChangeTitle} style={{margin: '5px 0px'}} placeholder="게시글 제목을 입력하세요" /></Form.Item>
-        <Form.Item><Input.TextArea value={mainTexts} style={{margin: '5px 0px'}} onChange={onChangeMainTexts} maxLength={140} placeholder="게시글 본문을 작성하세요." /></Form.Item>
+        <Form.Item><Input.TextArea value={mainTexts} style={{margin: '5px 0px'}} onChange={onChangeMainTexts} maxLength={1000} placeholder="게시글 본문을 작성하세요." /></Form.Item>
         <Form.Item>
           <div>
           <input type="file" name="image" multiple hidden ref={imageInput} onChange={onChangeImages} />
@@ -260,7 +274,7 @@ const onChangeDate = (range) => {
           {imagePaths.map((v, i) => (
           <div key={v} style={{ display: 'inline-block' }}>
           {/* <img src={`http://localhost:3065/${v}`} style={{ width: '200px' }} alt={v} /> */}
-          { <img src={v.replace(/\/thumb\//,'/origianl/')} style={{ width: '200px' }} alt={v} /> }
+          <img src={v.replace(/\/thumb\//,'/origianl/')} style={{ width: '200px' }} alt={v} />
           <div>
           <Button onClick={onRemoveImage(i)}>제거</Button>
           </div>
@@ -290,7 +304,7 @@ const onChangeDate = (range) => {
               <Button key="post" type="button" onClick={makeDateRadio}>날짜 설정</Button>
             </Form.Item>
             <Form.Item>
-              <Button key="post" type="primary" onClick={setSchdule}>일정 등록</Button>
+              <Button key="post" type="primary" onClick={registerSchdule}>일정 등록</Button>
             </Form.Item>
           </Form>
       </Modal>

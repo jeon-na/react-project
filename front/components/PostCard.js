@@ -131,7 +131,7 @@ const PostCard = ({ post }) => {
           <div>
               {pictureOrRoute
               ? post.Images[0] && <PostImages images={post.Images} />
-              : <PostRoutes />}
+              : <PostRoutes/>}
           </div>
           ]}
         actions={[
@@ -230,6 +230,7 @@ PostCard.propTypes = {
     createdAt: PropTypes.string,
     Comments: PropTypes.arrayOf(PropTypes.object),
     Images: PropTypes.arrayOf(PropTypes.object),
+    Schedules: PropTypes.arrayOf(PropTypes.object), //추가
     Likers: PropTypes.arrayOf(PropTypes.object),
     RetweetId: PropTypes.number,
     Retweet: PropTypes.objectOf(PropTypes.any),

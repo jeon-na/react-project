@@ -1,27 +1,35 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { List, Button, Avatar, Image } from 'antd';
-import FollowButtonInList from './FollowButtonInList';
+import { useDispatch } from 'react-redux';
+import PostListImages from './PostListImages';
 
-
-const PostList = ({myPosts, totalPosts}) => {
-    const myPostsId = myPosts.find((v) => v.id === totalPosts.id)
-
+const PostList = ({header, data, loading}) => {
+    const dispatch = useDispatch();
+    //console.log(data)
+    console.log("postlist", data)
+    
     return (
-        <Image.PreviewGroup>
-            {/* {totalPosts.map((v)=> {
-                <Image width={150} height={150} src={v.Images[0].src} />
-            })} */}
-            <Image width={150} height={150} src={totalPosts[0].Images[0].src} />
-            <Image width={150} height={150} src={totalPosts[1].Images[0].src} />
-            <Image width={150} height={150} src={totalPosts[2].Images[0].src} />
-        </Image.PreviewGroup>
+        <>
+        { data
+            ? (
+                <Image.PreviewGroup>
+                    { data.map((v) => 
+                        <PostListImages images={v.Images}  post={v}/>
+                    )}
+                </Image.PreviewGroup>
+            ) : (
+                null
+            )
+        }
+        </>
     )
 };
 
 PostList.propTypes = {
-    myPosts: PropTypes.array.isRequired,
-    totalPosts: PropTypes.array.isRequired,
+    header: PropTypes.string.isRequired,
+    data: PropTypes.array.isRequired,
+    loading: PropTypes.bool.isRequired,
 };
 
 export default PostList;

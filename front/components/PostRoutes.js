@@ -1,53 +1,60 @@
 import React, { useCallback, useState } from 'react';
+import { useEffect } from "react";
 import PropTypes from 'prop-types';
 import { List, Segmented, Avatar, Tabs } from 'antd';
 import Map from './Map';
 
 const data = [
   {
-    order: 1,
-    spot: '경복궁',
+    spotOrder: 1,
+    spotName: '경복궁',
+    spotAddress: '대한민국 서울특별시 종로구 사직로 161 경복궁'
   },
   {
-    order: 2,
-    spot: '블루보틀',
+    spotOrder: 2,
+    spotName: '블루보틀 삼청 카페',
+    spotAddress: '대한민국 서울특별시 종로구 사직로 161 경복궁'
   },
   {
-    order: 3,
-    spot: '명동교자',
+    spotOrder: 3,
+    spotName: '명동교자 분점',
+    spotAddress: '대한민국 서울특별시 종로구 사직로 161 경복궁'
   },
 ];
 
 const data2 = [
   {
-    order: 1,
-    spot: '롯데월드타워',
+    spotOrder: 1,
+    spotName: '롯데월드타워',
+    spotAddress: '대한민국 서울특별시 종로구 사직로 161 경복궁'
   },
   {
-    order: 2,
-    spot: '매드포갈릭',
+    spotOrder: 2,
+    spotName: '매드포갈릭',
+    spotAddress: '대한민국 서울특별시 종로구 사직로 161 경복궁'
   },
-  {
-    order: 3,
-    spot: '석촌 호수',
-  },
+
 ];
 const data3 = [
   {
-    order: 1,
-    spot: '코엑스',
+    spotOrder: 1,
+    spotName: '코엑스',
+    spotAddress: '대한민국 서울특별시 종로구 사직로 161 경복궁'
   },
-
   {
-    order: 2,
-    spot: '카페 뮬라',
+    spotOrder: 2,
+    spotName: '농민백암순대 본점',
+    spotAddress: '대한민국 서울특별시 종로구 사직로 161 경복궁'
   },
 
 ];
 
-
 const PostRoutes = ({ schedules }) => {
     const [showImagesZoom, setShowImagesZoom] = useState(false);
+
+    useEffect(() => {
+      console.log(schedules);
+  }, [])
 
     const onZoom = useCallback(() => {
         setShowImagesZoom(true);
@@ -61,7 +68,7 @@ const PostRoutes = ({ schedules }) => {
         <>
 
 <Tabs defaultActiveKey="1" style={{padding: '20px'}}>
-    <Tabs.TabPane tab="221121 1일차" key="1">
+<Tabs.TabPane tab={'1일차'} key={1}>
     <List
     style={{padding: '10px'}}
     itemLayout="horizontal"
@@ -69,14 +76,15 @@ const PostRoutes = ({ schedules }) => {
     renderItem={(item) => (
       <List.Item>
         <List.Item.Meta
-          avatar={<Avatar size="small" shape="square" style={{ backgroundColor: '#87d068' }}>{item.order}</Avatar>}
-          title={item.spot}
+          avatar={<Avatar size="small" shape="square" style={{ backgroundColor: '#87d068' }}>{item.spotOrder}</Avatar>}
+          title={item.spotName}
+          description={item.spotAddress}
         />
       </List.Item>
     )}
   />
     </Tabs.TabPane>
-    <Tabs.TabPane tab="221122 2일차" key="2">
+    <Tabs.TabPane tab="2일차" key="2">
           <List
     style={{padding: '10px'}}
     itemLayout="horizontal"
@@ -84,14 +92,15 @@ const PostRoutes = ({ schedules }) => {
     renderItem={(item) => (
       <List.Item>
         <List.Item.Meta
-          avatar={<Avatar size="small" shape="square" style={{ backgroundColor: '#87d068' }}>{item.order}</Avatar>}
-          title={item.spot}
+          avatar={<Avatar size="small" shape="square" style={{ backgroundColor: '#87d068' }}>{item.spotOrder}</Avatar>}
+          title={item.spotName}
+          description={item.spotAddress}
         />
       </List.Item>
     )}
   />
     </Tabs.TabPane>
-    <Tabs.TabPane tab="221123 3일차" key="3">
+    <Tabs.TabPane tab="3일차" key="3">
       <List
     style={{padding: '10px'}}
     itemLayout="horizontal"
@@ -99,14 +108,34 @@ const PostRoutes = ({ schedules }) => {
     renderItem={(item) => (
       <List.Item>
         <List.Item.Meta
-          avatar={<Avatar size="small" shape="square" style={{ backgroundColor: '#87d068' }}>{item.order}</Avatar>}
-          title={item.spot}
+          avatar={<Avatar size="small" shape="square" style={{ backgroundColor: '#87d068' }}>{item.spotOrder}</Avatar>}
+          title={item.spotName}
+          description={item.spotAddress}
+        />
+      </List.Item>
+    )}
+  />
+    </Tabs.TabPane> 
+  {/* {schedules.map((v)=>(
+    <Tabs.TabPane tab={v.Key + '일차'} key={v.Key}>
+          <List
+          style={{padding: '10px'}}
+          itemLayout="horizontal"
+          dataSource={v.Schedule}
+          renderItem={(item) => (
+      <List.Item>
+        <List.Item.Meta
+          avatar={<Avatar size="small" shape="square" style={{ backgroundColor: '#87d068' }}>{item.spotOrder}</Avatar>}
+          title={item.spotName}
+          description={item.spotAddress}
         />
       </List.Item>
     )}
   />
     </Tabs.TabPane>
-  </Tabs>
+  ))} */}
+    </Tabs>
+
         </>
     )
 };
